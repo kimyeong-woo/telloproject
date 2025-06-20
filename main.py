@@ -9,13 +9,13 @@ import math
 tello = TelloController()
 cam = CameraTransform("camera_calibration/camera_params.yaml")
 
-WHITE_THRESHOLD = 250
-WHITE_THRESHOLD_CONT = 150
-ELLIPSIS_AREA_RATIO_RANGE = (0.6, 1.4)
-ELLIPSIS_ASPECT_RATIO_THRESHOLD = 1.35
+WHITE_THRESHOLD = 210
+WHITE_THRESHOLD_CONT = 110
+ELLIPSIS_AREA_RATIO_RANGE = (0.85, 1.15)
+ELLIPSIS_ASPECT_RATIO_THRESHOLD = 1.1
 ELLIPSIS_SIZE_THRESHOLD = 50
 
-TARGET_ERROR_THRESHOLD = 0.15   # 목표 오차 임계값 (cm)
+TARGET_ERROR_THRESHOLD = 0.12   # 목표 오차 임계값 (cm)
 TARGET_ERROR_THRESHOLD_CONT = 0.025  # 컨투어 모드에서의 목표 오차 임계값 (cm)
 
 COUNTOUR_HEIGHT = 50
@@ -110,6 +110,8 @@ def main():
     if not tello.can_flight():
         return
     
+    input("push any key for continue...")
+    
     start_time = time.time()
     
     tello.takeoff()
@@ -123,7 +125,7 @@ def main():
 
     height = tello.get_height()
     print(f"현재 높이: {height}cm")
-    tello.go_xyz_speed(80, -15, 30, 90)  # waypoint 1
+    tello.go_xyz_speed(80, -15, 20, 90)  # waypoint 1
     print("waypoint 1 도달")
     time.sleep(0.5)
 
@@ -138,7 +140,7 @@ def main():
 
     height = tello.get_height()
     print(f"현재 높이: {height}cm")
-    tello.go_xyz_speed(80, -28, 70, 90) # waypoint 3
+    tello.go_xyz_speed(80, -30, 70, 90) # waypoint 3
     print("waypoint 3 도달")
 
     height = tello.get_height()
@@ -160,7 +162,7 @@ def main():
 
     while tracking_mode != "land":
         height = tello.get_height()
-        height = max(height, 20)
+        height = max(height, COUNTOUR_HEIGHT)
         if height <= COUNTOUR_HEIGHT:
             tracking_mode = "contour"
         print(f"현재 높이: {height}cm")
@@ -185,7 +187,7 @@ def main():
                 # holdtime이 0 이하가 되면 드론 하강
                 print("목표 위치 도달, 하강 시작")
                 if tracking_mode != "contour":
-                    tello.go_xyz_speed(0, 0, -50, 50)
+                    tello.go_xyz_speed(0, 0, -50, 100)
                     pid.reset()
                     pid.init_dt()
                 else:
