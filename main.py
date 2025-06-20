@@ -9,18 +9,18 @@ import math
 tello = TelloController()
 cam = CameraTransform("camera_calibration/camera_params.yaml")
 
-WHITE_THRESHOLD = 210
-WHITE_THRESHOLD_CONT = 110
+WHITE_THRESHOLD = 200
+WHITE_THRESHOLD_CONT = 150
 ELLIPSIS_AREA_RATIO_RANGE = (0.85, 1.15)
 ELLIPSIS_ASPECT_RATIO_THRESHOLD = 1.1
 ELLIPSIS_SIZE_THRESHOLD = 50
 
-TARGET_ERROR_THRESHOLD = 0.12   # 목표 오차 임계값 (cm)
-TARGET_ERROR_THRESHOLD_CONT = 0.025  # 컨투어 모드에서의 목표 오차 임계값 (cm)
+TARGET_ERROR_THRESHOLD = 0.1   # 목표 오차 임계값 (cm)
+TARGET_ERROR_THRESHOLD_CONT = 0.07  # 컨투어 모드에서의 목표 오차 임계값 (cm)
 
-COUNTOUR_HEIGHT = 50
+COUNTOUR_HEIGHT = 60
 
-HOLD_TIME = 0.6
+HOLD_TIME = 0.4
 
 target_point = None
 
@@ -125,13 +125,13 @@ def main():
 
     height = tello.get_height()
     print(f"현재 높이: {height}cm")
-    tello.go_xyz_speed(80, -15, 20, 90)  # waypoint 1
+    tello.go_xyz_speed(80, -7, 20, 100)  # waypoint 1
     print("waypoint 1 도달")
     time.sleep(0.5)
 
     height = tello.get_height()
     print(f"현재 높이: {height}cm")
-    tello.go_xyz_speed(150, 0, -70, 90) # waypoint 2
+    tello.go_xyz_speed(150, 0, -70, 100) # waypoint 2
     print("waypoint 2 도달")
 
     tello.rotate_clockwise(90)
@@ -140,12 +140,12 @@ def main():
 
     height = tello.get_height()
     print(f"현재 높이: {height}cm")
-    tello.go_xyz_speed(80, -30, 70, 90) # waypoint 3
+    tello.go_xyz_speed(80, -30, 70, 100) # waypoint 3
     print("waypoint 3 도달")
 
     height = tello.get_height()
     print(f"현재 높이: {height}cm")
-    tello.go_xyz_speed(142, 0, 0, 90) # waypoint 4
+    tello.go_xyz_speed(142, 0, 0, 100) # waypoint 4
     print("waypoint 4 도달")
 
     fly_time = time.time()
